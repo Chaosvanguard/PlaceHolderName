@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
@@ -26,9 +25,9 @@ import models.RawModel;
 import models.TexturedModel;
 import normalMappingObjConverter.NormalMappedObjLoader;
 import objConverter.OBJFileLoader;
-import particles.Particle;
 import particles.ParticleMaster;
 import particles.ParticleSystem;
+import particles.ParticleTexture;
 import renderEngine.DisplayManager;
 import renderEngine.Loader;
 import renderEngine.MasterRenderer;
@@ -182,7 +181,9 @@ public class MainGameLoop {
 		WaterTile water = new WaterTile(75, -75, 0);
 		waters.add(water);
 		
-		ParticleSystem system = new ParticleSystem(50, 25, 0.3f, 4, 1);
+		ParticleTexture particleTexture = new ParticleTexture(loader.loadTexture("particleStar"), 1, true);
+		
+		ParticleSystem system = new ParticleSystem(particleTexture, 50, 25, 0.3f, 4, 1);
 		system.randomizeRotation();
 		system.setDirection(new Vector3f(0, 1, 0), 0.1f);
 		system.setLifeError(0.1f);
@@ -198,7 +199,7 @@ public class MainGameLoop {
 			
 			system.generateParticles(player.getPosition());
 			
-			ParticleMaster.update();
+			ParticleMaster.update(camera);
 			entity.increaseRotation(0, 1, 0);
 			entity2.increaseRotation(0, 1, 0);
 			entity3.increaseRotation(0, 1, 0);
